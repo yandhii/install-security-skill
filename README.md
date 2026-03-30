@@ -6,6 +6,23 @@ A Claude Code skill that automatically audits any package, tool, or integration 
 
 Runs a supply-chain security audit and presents a verdict **before** any install command is executed. Never installs first and audits later.
 
+## Usage
+
+For best results, **explicitly invoke the skill** when installing anything:
+
+```
+/install-security <package-or-url>
+```
+
+Examples:
+```
+/install-security lodash
+/install-security https://ampcode.com/install.sh
+/install-security @modelcontextprotocol/server-filesystem
+```
+
+While the skill auto-triggers on install intent, explicit invocation ensures the audit always runs — even in ambiguous or multi-step conversations where the trigger might be missed.
+
 ## Triggers
 
 **Strong** — always audits:
