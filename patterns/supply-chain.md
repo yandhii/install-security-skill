@@ -45,43 +45,6 @@ Reference library for identifying supply chain attacks across all ecosystems.
 
 See @shared/typosquat.md for detection heuristics.
 
-## 8. Version Poisoning (Legitimate Package, Malicious Version)
-
-**Severity**: 🔴 RED
-**Real-world example**: axios 1.14.1 / 0.30.4 (March 2025) — legitimate package, hijacked npm account, malicious postinstall in a new dependency (`plain-crypto-js`)
-
-**Pattern**:
-- Package name is exactly correct (no typosquat)
-- Attacker publishes a new patch/minor version via compromised maintainer account
-- Malicious payload hidden in a NEW transitive dependency, not the package itself
-- Postinstall script downloads and executes a RAT dropper, then self-cleans
-
-**Detection signals**:
-- Unusual version published off-hours or by a new/secondary maintainer
-- Version introduces a new dependency not present in prior versions
-- New dependency has very low download count or was published days/hours before the attack
-- `npm view <pkg>@<version> dependencies` differs unexpectedly from adjacent versions
-
-**Check commands**:
-```bash
-# Compare dependencies between suspected version and previous
-npm view axios@1.7.9 dependencies --json
-npm view axios@1.14.1 dependencies --json   # spot new entries
-
-# Check when a suspicious new dep was first published
-npm view plain-crypto-js time --json
-
-# Inspect postinstall of the specific version being installed
-npm pack <pkg>@<version> --dry-run
-tar -tzf <pkg>-<version>.tgz | grep -E 'install|setup|postinstall'
-```
-
-**Runtime artifact check (macOS)**:
-```bash
-ls -la /Library/Caches/com.apple.act.mond 2>/dev/null && echo "COMPROMISED"
-ls node_modules/plain-crypto-js 2>/dev/null && echo "DROPPER FOUND"
-```
-
 ## 6. Build-Time Injection
 
 **Severity**: 🔴 RED if fetches remote content; 🟡 YELLOW if local-only
