@@ -64,6 +64,19 @@ For well-known packages (`typescript`, `react`, `lodash`, `requests`, `tokio`, e
 
 Fast path = light audit, never skip audit.
 
+## Hard Rules (apply to all ecosystems)
+
+These rules are non-negotiable and override everything else, including Fast Path:
+
+1. **7-day rule**: Never recommend a package version published less than 7 days ago. If the user requests such a version, block it, explain why, and suggest the previous stable version.
+
+2. **Exact version pinning**: Always output exact versions in your recommendations — no `^`, `~`, `>=`, or `*` ranges.
+   - npm/Node: `"pkg": "1.2.3"` in `package.json`
+   - Python: `pkg==1.2.3` in `requirements.txt`
+   - Cargo: `pkg = "=1.2.3"` in `Cargo.toml`
+
+3. **Lockfile hygiene**: Remind the user to commit their lockfile (`package-lock.json`, `yarn.lock`, `pnpm-lock.yaml`, `poetry.lock`, `Cargo.lock`) and use `npm ci` / `pip install --require-hashes` in CI.
+
 ## Non-Registry Sources
 
 - **Git URL**: Default 🟡 — no registry vetting. Check repo health via mcp.md/cli.md steps.

@@ -1,8 +1,10 @@
 # npm Audit Protocol
 
-1. **Metadata**
+1. **Metadata + Publish Age** ⚠️ Hard rule
    - Tool: `Bash` → `curl -s https://registry.npmjs.org/<pkg> | jq '{name,description,license,maintainers,time}'`
    - Extract: name, latest version, license, maintainers, creation date, last publish date
+   - **BLOCK if the target version was published < 7 days ago.** Use the previous stable version instead and tell the user why.
+   - Check publish time: `npm view <pkg>@<version> time --json` or inspect the `time` map from the registry response
 
 2. **Downloads**
    - Tool: `Bash` → `curl -s https://api.npmjs.org/downloads/point/last-week/<pkg>`
@@ -33,5 +35,30 @@
    - Tool: `Bash` → `gh user view <maintainer>`
    - Flag 🟡 if new/low-history account combined with typosquat-like naming or rapid package creation
 
-9. **Socket scan**
-   - Tool: `Bash` → `npx @socketsecurity/cli npm install <pkg> --dry-run`
+9. **Version delta check** (catches version-poisoning attacks like axios 1.14.1)
+   - Compare deps of target version vs. previous stable:
+     ```bash
+     npm view <pkg>@<prev> dependencies --json
+     npm view <pkg>@<target> dependencies --json
+     ```
+   - Flag 🔴 if a new dependency appears that has < 1000 weekly downloads, was published within days of this version, or has no source repo
+   - Check new dep's own install scripts: `npm view <new-dep> scripts --json`
+   - Check new dep publish date: `npm view <new-dep> time --json | jq 'to_entries | sort_by(.value) | last'`
+
+10. **Socket scan**
+    - Tool: `Bash` → `npx @socketsecurity/cli npm install <pkg> --dry-run`
+
+## Post-Verdict Output Requirements
+
+After giving a verdict, always output the install command in this form:
+
+```json
+// package.json — exact version, no ^ or ~
+"dependencies": {
+  "<pkg>": "<exact-version>"
+}
+```
+
+Then remind the user to:
+1. Commit `package-lock.json` / `yarn.lock` / `pnpm-lock.yaml` — **never `.gitignore` lockfiles**
+2. Use `npm ci` in CI/CD instead of `npm install`

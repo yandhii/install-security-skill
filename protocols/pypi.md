@@ -16,9 +16,11 @@
    - Tool: `Bash` → `curl -s https://pypi.org/pypi/<pkg>/json | jq '.info.requires_dist'`
    - Note any CLI commands installed
 
-5. **Release timeline**
+5. **Release timeline** ⚠️ Hard rule
    - Tool: `Bash` → `curl -s https://pypi.org/pypi/<pkg>/json | jq '.releases | keys'`
    - Flag 🟡 if brand new package, sudden major version jump, or many releases in short period from unknown author
+   - **BLOCK if the target version was uploaded < 7 days ago.** Recommend the previous stable version instead.
+   - Check upload date: `curl -s https://pypi.org/pypi/<pkg>/<version>/json | jq '.urls[0].upload_time'`
 
 6. **`.pth` file check**
    - Tool: `Bash` → `curl -s https://pypi.org/pypi/<pkg>/json | jq '.urls[].filename'`
