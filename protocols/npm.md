@@ -1,5 +1,21 @@
 # npm Audit Protocol
 
+## Stop Early
+
+Stop the audit immediately and output a verdict if you find any of the following — do not continue to remaining steps:
+
+- `preinstall` / `postinstall` / `install` script that downloads and executes remote content (confirmed curl/wget/fetch + exec pattern)
+- Package confirmed malicious in the GitHub Advisory Database, npm audit, or OSV
+- High-confidence typosquat of a security-critical package (crypto, auth, payments, signing)
+- Any ⛔ REJECT pattern from @patterns/supply-chain.md or @patterns/prompt-injection.md
+
+## Critical Path
+
+If time-constrained, run these three first — they decide most verdicts:
+1. Publish age (7-day rule)
+2. Install scripts (`preinstall`, `postinstall`)
+3. Typosquat check
+
 1. **Metadata + Publish Age** ⚠️ Hard rule
    - Tool: `Bash` → `curl -s https://registry.npmjs.org/<pkg> | jq '{name,description,license,maintainers,time}'`
    - Extract: name, latest version, license, maintainers, creation date, last publish date

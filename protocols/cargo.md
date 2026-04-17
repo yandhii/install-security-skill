@@ -1,5 +1,19 @@
 # Cargo (crates.io) Audit Protocol
 
+## Stop Early
+
+Stop immediately and output a verdict if you find:
+
+- `build.rs` with confirmed network requests or remote shell execution (not suspected — confirmed)
+- Crate confirmed malicious in RustSec Advisory Database
+- High-confidence typosquat of a widely-used crate
+
+## Critical Path
+
+1. Publish date (7-day rule — check `updated_at` on the target version)
+2. `build.rs` presence and content
+3. Typosquat check
+
 1. **Metadata**
    - Tool: `Bash` → `curl -s https://crates.io/api/v1/crates/<pkg> | jq '{name:.crate.name,version:.crate.max_stable_version,downloads:.crate.downloads,updated_at:.crate.updated_at,repository:.crate.repository,homepage:.crate.homepage}'`
 

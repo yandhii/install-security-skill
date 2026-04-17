@@ -38,6 +38,24 @@
 
 If confidence is Low, default recommendation should be "Install with caution" at best.
 
+### Confidence Downgrade Triggers
+
+Downgrade automatically — do not stay at the default level when evidence is incomplete:
+
+**High → Medium** if any of:
+- Registry API returned incomplete or malformed data
+- Version publish date could not be retrieved
+- Install scripts could not be fetched or parsed
+- Source repository is unavailable, private, or returns errors
+
+**Medium → Low** if any of:
+- Package source code is unavailable for review
+- Artifact is from a non-registry source (Git URL, tarball, raw script URL)
+- Critical metadata (publisher identity, version, license) is missing or contradictory
+- Network errors blocked more than one key check from completing
+
+**Rule**: Never report "no issues found" when confidence is Low. Always name the gaps explicitly in the verdict — which checks were skipped and why.
+
 ## After User Confirms
 
 Only after the user explicitly confirms, provide an install command with **exact version pinning to the version reviewed**. This prevents attacks where the registry updates the package between the audit and the install:

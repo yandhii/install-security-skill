@@ -26,6 +26,18 @@ If validation fails, ask the user to provide the exact name — do not guess or 
 
 If terminal tools (`curl`, `jq`, `gh`) are unavailable, use WebSearch and WebFetch to query registries and GitHub directly. Do NOT fabricate command outputs.
 
+## Execution Order
+
+For every audit, follow this sequence — do not skip steps or reorder:
+
+1. **Identify** — use the Dispatch table below to determine artifact type
+2. **Critical path first** — run the top-priority checks listed at the top of that protocol
+3. **Stop early if warranted** — any ⛔ REJECT finding ends the audit immediately; output verdict now, do not continue
+4. **Complete remaining checks** — finish the protocol unless stopped in step 3
+5. **Assess confidence** — apply downgrade rules from @shared/verdict.md before scoring
+6. **Output verdict** — use the report template from @shared/verdict.md; never omit gaps
+7. **Gate on confirmation** — never provide an install command until the user explicitly confirms
+
 ## Dispatch
 
 Determine artifact type, then follow the corresponding protocol:

@@ -1,5 +1,20 @@
 # MCP Server Audit Protocol
 
+## Stop Early
+
+Stop immediately and output a verdict if you find:
+
+- Shell + network + broad filesystem access confirmed together in source code, with no clear justification
+- Credential harvesting pipeline confirmed: reads env/secrets → sends to external URL
+- Any ⛔ REJECT pattern from @patterns/prompt-injection.md
+- Install script requests unrestricted Bash access to the full filesystem
+
+## Critical Path
+
+1. Capability review (shell / network / filesystem scope)
+2. Install scripts
+3. Source code scan for credential access patterns
+
 ## 1. Find the repo
 - Tool: `WebSearch` → `<name> MCP server github`
 - Get the GitHub owner/repo slug

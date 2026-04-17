@@ -1,5 +1,20 @@
 # PyPI Audit Protocol
 
+## Stop Early
+
+Stop immediately and output a verdict if you find:
+
+- `.pth` file containing executable `import` statements beyond path configuration (confirmed startup execution)
+- `setup.py` or build backend that downloads and executes remote content during install
+- Package confirmed malicious in PyPI advisory database or OSV
+- High-confidence typosquat of a security-critical package
+
+## Critical Path
+
+1. Publish age (7-day rule)
+2. `.pth` file check
+3. Build/install behavior
+
 1. **Metadata**
    - Tool: `Bash` → `curl -s https://pypi.org/pypi/<pkg>/json | jq '{name,version:.info.version,author:.info.author,license:.info.license,project_urls:.info.project_urls,requires_dist:.info.requires_dist}'`
 

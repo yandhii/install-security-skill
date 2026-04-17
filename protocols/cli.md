@@ -1,5 +1,19 @@
 # CLI Tool Audit Protocol
 
+## Stop Early
+
+Stop immediately and output a verdict if you find:
+
+- Install method is piped shell execution (`curl | bash`, `wget | sh`) with no checksum verification option
+- Confirmed malicious advisory for this tool
+- Binary is self-updating from a remote URL without user confirmation
+
+## Critical Path
+
+1. Install method (piped shell vs package manager vs binary + checksum)
+2. Binary provenance (CI-built? checksums published?)
+3. Repo health
+
 1. **Find the repo**
    - Tool: `WebSearch` → `<name> cli github`
 
