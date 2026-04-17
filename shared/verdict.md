@@ -1,5 +1,24 @@
 # Verdict Format
 
+## Summary Mode
+
+For Fast Path audits with no RED/YELLOW findings, use this condensed format instead of the full report:
+
+```
+**[Package name]** — ✅ PASS
+- Ecosystem: [type] | Publisher: [name] | Version: [x.y.z] | Published: [N days ago]
+- [One-line summary, e.g. "Well-known package, verified publisher, no install hooks"]
+- Confidence: High
+- Recommendation: Install
+```
+
+Use Summary Mode only when **all** of:
+- Fast Path applies (well-known package, verified publisher, high downloads)
+- All findings are 🟢 GREEN or none
+- Confidence is High
+
+Use the full report template for any 🟡 YELLOW, 🔴 RED, or ⛔ REJECT finding, or when confidence is Medium/Low.
+
 ## Report Template
 
 ```

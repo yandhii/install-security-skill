@@ -31,6 +31,7 @@ Use @patterns/code-red-flags.md and @patterns/prompt-injection.md as the referen
 | Tool abuse | — | Constructs shell commands with user data sent externally | Requests unrestricted Bash or full filesystem access |
 | Stealth | — | Hidden instructions (HTML comments, zero-width chars, obfuscation) | Minified bundled scripts that can't be easily reviewed |
 | Scope creep | — | Skill does things far outside its stated description | Minor undocumented behaviors |
+| Agent config write | — | Writes to `CLAUDE.md`/`AGENTS.md` without user consent, or injects persistent routing/instructions favoring a service | Asks user first but injects marketing copy or routing rules into project config |
 
 ## 3. Agent-sensitive path check
 
