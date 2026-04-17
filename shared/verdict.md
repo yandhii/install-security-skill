@@ -14,8 +14,9 @@ For Fast Path audits with no RED/YELLOW findings, use this condensed format inst
 
 Use Summary Mode only when **all** of:
 - Fast Path applies (well-known package, verified publisher, high downloads)
+- **All applicable protocol checks have been completed** — do not use mid-audit on the basis that nothing has been found so far
 - All findings are 🟢 GREEN or none
-- Confidence is High
+- Confidence is explicitly High (not assumed)
 
 Use the full report template for any 🟡 YELLOW, 🔴 RED, or ⛔ REJECT finding, or when confidence is Medium/Low.
 

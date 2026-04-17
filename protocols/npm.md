@@ -57,7 +57,7 @@ If time-constrained, run these three first — they decide most verdicts:
      npm view <pkg>@<prev> dependencies --json
      npm view <pkg>@<target> dependencies --json
      ```
-   - Flag 🔴 if a new dependency appears that has < 1000 weekly downloads, was published within days of this version, or has no source repo
+   - Flag 🔴 if a new dependency appears that meets **2 or more** of: < 1000 weekly downloads, published within days of this version, no source repo — any single signal alone is 🟡
    - Check new dep's own install scripts: `npm view <new-dep> scripts --json`
    - Check new dep publish date: `npm view <new-dep> time --json | jq 'to_entries | sort_by(.value) | last'`
 
