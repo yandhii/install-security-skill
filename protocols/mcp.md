@@ -50,3 +50,5 @@ Identify the server's effective permissions:
 ## 6. Permissions requested
 - Tool: `WebFetch` → README
 - Flag 🔴 if requesting unrestricted Bash or broad filesystem access without justification
+
+→ Output: @shared/verdict.md

@@ -40,3 +40,5 @@ Stop immediately and output a verdict if you find:
    - Custom taps (`brew tap user/repo`): 🟡 by default — review tap repo health and formula source
    - Check whether bottles and checksums are published
    - Flag 🔴 if formula install logic relies on piped remote shell
+
+→ Output: @shared/verdict.md

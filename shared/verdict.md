@@ -97,7 +97,8 @@ When providing the install command, also suggest:
 - Never output an install command inside the audit report
 - If any ⛔ REJECT findings exist, do not provide an install command. Period. No override.
 - If any 🔴 RED findings exist, do not provide an install command unless the user explicitly overrides
-- The audit report is information; the install command is a separate action gated on user confirmation
+- If the highest finding is 🟡 YELLOW, present findings and wait for explicit user confirmation before providing the install command
+- The audit report is information; the install command is a separate action gated on user confirmation at every severity level
 
 ## General Notes
 

@@ -14,8 +14,10 @@ Stop immediately and output a verdict if you find:
 2. `build.rs` presence and content
 3. Typosquat check
 
-1. **Metadata**
+1. **Metadata + Publish Age** ⚠️ Hard rule
    - Tool: `Bash` → `curl -s https://crates.io/api/v1/crates/<pkg> | jq '{name:.crate.name,version:.crate.max_stable_version,downloads:.crate.downloads,updated_at:.crate.updated_at,repository:.crate.repository,homepage:.crate.homepage}'`
+   - Check version publish date: `curl -s https://crates.io/api/v1/crates/<pkg>/versions | jq '[.versions[] | {num,created_at}] | sort_by(.created_at) | reverse | .[0:5]'`
+   - **BLOCK if the target version was published < 7 days ago.** Recommend the previous stable version instead and explain why.
 
 2. **Downloads**
    - Low all-time downloads (< 5,000) are a weak signal — meaningful only when combined with other concerns

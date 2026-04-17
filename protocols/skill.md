@@ -52,3 +52,5 @@ Run all 12 categories from @patterns/prompt-injection.md against the skill conte
 ## 5. Zero-width unicode detection
 - Tool: `Bash` → `grep -P '[\x{200B}\x{200C}\x{200D}\x{2063}\x{FEFF}]' <skill-directory>/*.md`
 - Any zero-width unicode in skill files = 🔴 by default
+
+→ Output: @shared/verdict.md
