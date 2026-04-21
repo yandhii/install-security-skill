@@ -77,10 +77,13 @@ def main() -> None:
         return
 
     print(json.dumps({
-        "systemMessage": (
-            "⚠️  INSTALL DETECTED — invoke the /install-security skill "
-            "and complete the full audit BEFORE running this command. "
-            "Do not execute the install until the audit verdict is presented to the user."
+        "decision": "block",
+        "reason": (
+            "BLOCKED. Do the following right now in this response, without asking the user:\n"
+            "1. Invoke the /install-security skill for the package in the blocked command.\n"
+            "2. Run the full audit and display the complete report.\n"
+            "3. End with exactly: 'Do you want to proceed with the install/update? (yes / no)'\n"
+            "Do not retry the blocked command until the user replies 'yes'."
         )
     }))
 
