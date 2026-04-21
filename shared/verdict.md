@@ -88,6 +88,43 @@ Only after the user explicitly confirms, provide an install command with **exact
 
 If the user requests a different version than what was audited, re-run the audit for that version.
 
+## Safer Install Alternatives
+
+When a 🟡 YELLOW finding involves **remote download without checksum** (e.g. `curl -fsSL ... | bash`, install script that fetches files from a raw URL at install time, `claude plugin add` pulling from a live GitHub branch), proactively offer a safer local-clone path **before** providing the standard install command. Do not wait for the user to ask.
+
+### When to offer
+
+Offer if **any** of these apply:
+- Install script downloads files from a remote URL during execution (no SHA/checksum verification)
+- The install command targets a branch tip (e.g. `main`) rather than a tagged release or commit SHA
+- The artifact is a non-registry GitHub source and the plugin system does not support version pinning
+
+### What to offer
+
+```bash
+# 1. Clone and pin to the exact commit SHA that was audited
+git clone https://github.com/<owner>/<repo>.git
+cd <repo>
+git checkout <commit-sha>   # SHA of the reviewed tag/release
+
+# 2. Install from local path — no further remote fetching
+<ecosystem-specific local install command>
+# e.g. claude plugin add .        (Claude Code skills)
+#      npm install .               (npm packages)
+#      pip install .               (Python packages)
+#      cargo install --path .      (Rust crates)
+```
+
+**Why this is safer**: the bytes installed are identical to what was audited. A subsequent compromise of the upstream repo or CDN cannot affect this install. The risk window closes at `git checkout`.
+
+### When not to offer
+
+- Registry installs with exact version pinning (`npm install pkg@1.2.3`, `pip install pkg==1.2.3`) — the registry already pins the artifact by content hash
+- Install scripts that verify checksums themselves before executing downloaded content
+- The user has already opted into the standard path after being informed of the risk
+
+Always note the trade-off: local clone requires manual re-clone + re-audit for future updates, whereas the plugin system handles updates automatically (with the associated supply-chain risk).
+
 ## Post-Install Verification
 
 After providing the install command and the user confirms, append:
